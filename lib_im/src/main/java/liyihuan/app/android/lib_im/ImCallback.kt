@@ -6,7 +6,7 @@ package liyihuan.app.android.lib_im
  * @Author: liyihuan
  * @Date: 2021/12/20 22:28
  */
-interface ICallBack {
+interface ImCallback {
     fun onSuc()
     fun onFail(code: Int, msg: String?)
 }

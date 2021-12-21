@@ -7,7 +7,7 @@ import liyihuan.app.android.lib_im.utils.TypeUtils
 
 /**
  * @ClassName: PkMsg
- * @Description: 消息的封装使用，系统消息，C2C消息，群聊消息都一个意思
+ * @Description: 消息bean类的封装使用，系统消息，C2C消息，群聊消息都一个意思
  * @Author: liyihuan
  * @Date: 2021/12/20 23:05
  */
