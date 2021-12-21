@@ -1,5 +1,6 @@
 package liyihuan.app.android.lib_im.example
 
+import liyihuan.app.android.lib_im.IMManager
 import liyihuan.app.android.lib_im.IMMsgDispatcher
 import liyihuan.app.android.lib_im.ImActionMsgListener
 import liyihuan.app.android.lib_im.base.IBaseMsgBean
@@ -16,11 +17,11 @@ class ExampleTest {
      */
     val imActionMsgListener = ImActionMsgListener()
     fun onResume() {
-        IMMsgDispatcher.addC2CListener(imActionMsgListener)
+        IMManager.addC2CListener(imActionMsgListener)
     }
 
     fun onDestroy() {
-        IMMsgDispatcher.removeC2CListener(imActionMsgListener)
+        IMManager.removeC2CListener(imActionMsgListener)
     }
 
     fun solveMsg() {

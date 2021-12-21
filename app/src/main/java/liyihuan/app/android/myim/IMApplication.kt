@@ -13,6 +13,6 @@ class IMApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        IMManager.init(this)
+        IMManager.init(this)
     }
 }

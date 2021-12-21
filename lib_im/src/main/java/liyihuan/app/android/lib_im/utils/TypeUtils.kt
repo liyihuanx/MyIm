@@ -49,8 +49,15 @@ object TypeUtils {
         return needtypes
     }
 
+
     @JvmStatic
     val gson = Gson()
+
+    fun <T> fromJson(jsonBean: String, t: Type?): T? {
+        return gson.fromJson<T>(jsonBean, t)
+    }
+
+
 
 
 

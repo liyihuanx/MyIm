@@ -35,17 +35,11 @@ object IMMsgDispatcher {
      *  消息工厂，中间人
      *  真正把消息扔出去的地方，所有需要监听消息的页面就加入到list中
      */
-    private val groupImFactory = ArrayList<BaseImFactory>()
-    private val c2cImFactory = ArrayList<BaseImFactory>()
-    private val systemImFactory = ArrayList<BaseImFactory>()
+    val groupImFactory = ArrayList<BaseImFactory>()
+    val c2cImFactory = ArrayList<BaseImFactory>()
+    val systemImFactory = ArrayList<BaseImFactory>()
 
-    fun addC2CListener(imMsgListener: BaseImFactory) {
-        c2cImFactory.add(imMsgListener)
-    }
 
-    fun removeC2CListener(imMsgListener: BaseImFactory) {
-        c2cImFactory.remove(imMsgListener)
-    }
 
 
     /**

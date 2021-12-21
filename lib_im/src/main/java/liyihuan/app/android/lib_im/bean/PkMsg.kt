@@ -15,7 +15,7 @@ open class BasePkMsg<T> :  BaseMsgBean(){
     var userId = ""
     var nickName = ""
     var headPic = ""
-    var param = ""
+    private var param = ""
 
     /**
      * pk这一种消息就可以分为多种：

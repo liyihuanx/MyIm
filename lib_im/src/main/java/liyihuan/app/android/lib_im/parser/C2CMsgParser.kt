@@ -2,10 +2,12 @@ package liyihuan.app.android.lib_im.parser
 
 import android.util.Log
 import com.tencent.imsdk.*
+import liyihuan.app.android.lib_im.MsgType
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.base.BaseMsgParser
 import liyihuan.app.android.lib_im.base.IBaseMsgBean
 import liyihuan.app.android.lib_im.example.PkReqMsg
+import liyihuan.app.android.lib_im.example.TextC2CMsg
 import liyihuan.app.android.lib_im.utils.TypeUtils
 import org.json.JSONObject
 
@@ -53,7 +55,7 @@ open class C2CMsgParser : BaseMsgParser {
                     val userAction = jb.opt("userAction").toString()
                     Log.d("QWER", "${ele.type} --> parseMsg: ${dataJson}")
                     val classType = when (userAction) {
-                        "ACTION_ID" -> PkReqMsg::class.java
+                        MsgType.C2C_TEXT -> TextC2CMsg::class.java
                         else -> null
                     } ?: return null
                     been = TypeUtils.gson.fromJson(dataJson, classType)
