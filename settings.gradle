@@ -9,3 +9,4 @@ dependencyResolutionManagement {
 rootProject.name = "MyIm"
 include ':app'
 include ':lib_im'
+include ':lib_camera'

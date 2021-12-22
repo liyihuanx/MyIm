@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
+import liyihuan.app.android.lib_camera.PicPickHelper
+import liyihuan.app.android.lib_camera.PickCallback
+import liyihuan.app.android.lib_camera.Size
 import liyihuan.app.android.lib_im.*
+import liyihuan.app.android.lib_im.bean.ImageC2CMsg
 import liyihuan.app.android.lib_im.bean.TextC2CMsg
 
 class MainActivity : AppCompatActivity() {
@@ -19,12 +23,10 @@ class MainActivity : AppCompatActivity() {
         tvInfo.text = "我是：${UserInfoManager.username}"
         IMManager.addC2CListener(imActionMsgListener)
 
-        btnLogin.setOnClickListener {
-            IMManager.login(
-                UserInfoManager.userid,
-                GenerateTestUserSig.genTestUserSig(UserInfoManager.userid)
-            )
-        }
+        IMManager.login(
+            UserInfoManager.userid,
+            GenerateTestUserSig.genTestUserSig(UserInfoManager.userid)
+        )
 
         btnSend.setOnClickListener {
             val textC2CMsg = TextC2CMsg()
@@ -33,6 +35,20 @@ class MainActivity : AppCompatActivity() {
                 UserInfoManager.receiverid,
                 textC2CMsg
             )
+        }
+
+        btnSendPic.setOnClickListener {
+            PicPickHelper(this).show(Size(1, 2), object : PickCallback {
+                override fun onSuccess(pathList: MutableList<String>) {
+                    val result = pathList[0]
+                    Log.d("QWER", "返回照片: $result")
+
+                    val imageC2CMsg = ImageC2CMsg()
+                    imageC2CMsg.createMsg(ImageC2CMsg.ImageParam(result))
+                    IMManager.sendC2CPicMessage(UserInfoManager.receiverid, imageC2CMsg, result)
+                }
+
+            })
         }
 
         imActionMsgListener.onOptAction<TextC2CMsg>(MsgType.C2C_TEXT) {

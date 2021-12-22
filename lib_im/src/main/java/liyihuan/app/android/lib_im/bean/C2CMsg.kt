@@ -12,7 +12,7 @@ import liyihuan.app.android.lib_im.utils.TypeUtils
  * @Author: liyihuan
  * @Date: 2021/12/21 20:39
  */
-open class C2CMsg<T> : BaseMsgBean<T>() {
+open class C2CMsg<T> : BaseMsgBean() {
     var userId = ""
     var nickName = ""
     var headPic = ""
@@ -58,9 +58,8 @@ class TextC2CMsg : C2CMsg<String>() {
 }
 
 class ImageC2CMsg : C2CMsg<ImageC2CMsg.ImageParam>() {
-    class ImageParam {
-        val imageUrl = ""
-    }
+    data class ImageParam(val imageUrl: String = "")
+
 
     override fun createMsg(msgParamBean: ImageParam) {
         super.createMsg(msgParamBean)

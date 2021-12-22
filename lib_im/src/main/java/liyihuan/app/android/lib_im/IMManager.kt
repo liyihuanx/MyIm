@@ -1,6 +1,7 @@
 package liyihuan.app.android.lib_im
 
 import android.app.Application
+import android.util.Log
 import com.google.gson.Gson
 import com.tencent.imsdk.*
 import com.tencent.imsdk.BuildConfig
@@ -8,6 +9,7 @@ import liyihuan.app.android.lib_im.base.BaseImFactory
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.base.BaseMsgInterceptor
 import liyihuan.app.android.lib_im.base.IBaseMsgBean
+import liyihuan.app.android.lib_im.bean.ImageC2CMsg
 import liyihuan.app.android.lib_im.parser.C2CMsgParser
 import liyihuan.app.android.lib_im.parser.GroupMsgParser
 import liyihuan.app.android.lib_im.parser.SystemMsgParser
@@ -135,7 +137,7 @@ object IMManager {
     /**
      * 发送
      */
-    fun sendC2CTextMessage(chatId: String, timMessage: BaseMsgBean, callback: ImCallback = DefaultIMCallback("发送成功")) {
+    fun sendC2CTextMessage(chatId: String, timMessage: BaseMsgBean, callback: ImCallback = DefaultIMCallback("文本发送成功")) {
         val json = Gson().toJson(timMessage)
         val timMsg = TIMMessage()
         val elem = TIMTextElem()
@@ -149,6 +151,29 @@ object IMManager {
             conversation.sendMessage(timMsg, TIMValueCallBackWarp(callback))
         }
     }
+
+    fun sendC2CPicMessage(chatId: String, timMessage: BaseMsgBean,path:String,callback: ImCallback = DefaultIMCallback("图片发送成功")) {
+        val json = Gson().toJson(timMessage)
+        // 构造一条消息
+        val timMsg = TIMMessage()
+        // 添加图片
+        val elem = TIMImageElem()
+        elem.path = path
+        if (timMsg.addElement(elem)!=0){
+            Log.d("QWER", "消息添加失败: ")
+            return
+        }
+
+        checkLogin(callback) {
+            // 创建一个会话
+            val conversation =
+                TIMManager.getInstance().getConversation(TIMConversationType.C2C, chatId)
+            // 发送消息
+            conversation.sendMessage(timMsg, TIMValueCallBackWarp(callback))
+        }
+    }
+
+
 
     /**
      * 检查是否登录

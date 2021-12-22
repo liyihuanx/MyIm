@@ -2,6 +2,8 @@ package liyihuan.app.android.lib_im.base
 
 import com.google.gson.annotations.Expose
 import com.tencent.imsdk.TIMMessage
+import com.tencent.imsdk.TIMUserProfile
+import com.tencent.imsdk.TIMValueCallBack
 
 /**
  * @ClassName: BaseMsgBean
@@ -9,7 +11,7 @@ import com.tencent.imsdk.TIMMessage
  * @Author: liyihuan
  * @Date: 2021/12/20 22:15
  */
-abstract class BaseMsgBean<T> : IBaseMsgBean {
+abstract class BaseMsgBean : IBaseMsgBean {
     open var userAction = "-1000"
     /**
      * 不需要序列化和反序列化
@@ -27,6 +29,11 @@ abstract class BaseMsgBean<T> : IBaseMsgBean {
 
     override fun getTimMsg(): TIMMessage {
         return mTxMessage
+    }
+
+
+    open fun getSenderProfile(callBack: TIMValueCallBack<TIMUserProfile?>) {
+        mTxMessage.getSenderProfile(callBack)
     }
 
 }

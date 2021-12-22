@@ -19,15 +19,15 @@
 
 
     <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Login-IM"/>
-
-    <Button
         android:id="@+id/btnSend"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="sendMsg"/>
+        android:text="发送文本"/>
+
+    <Button
+        android:id="@+id/btnSendPic"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="发送图片"/>
 
 </LinearLayout>

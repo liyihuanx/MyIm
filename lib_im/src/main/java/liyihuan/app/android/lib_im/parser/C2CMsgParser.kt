@@ -6,6 +6,7 @@ import liyihuan.app.android.lib_im.MsgType
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.base.BaseMsgParser
 import liyihuan.app.android.lib_im.base.IBaseMsgBean
+import liyihuan.app.android.lib_im.bean.ImageC2CMsg
 import liyihuan.app.android.lib_im.bean.PkReqMsg
 import liyihuan.app.android.lib_im.bean.TextC2CMsg
 import liyihuan.app.android.lib_im.utils.TypeUtils
@@ -63,26 +64,6 @@ open class C2CMsgParser : BaseMsgParser {
                     e.printStackTrace()
                 }
             }
-            TIMElemType.Face -> {
-                var e: TIMFaceElem? = null
-                e = ele as TIMFaceElem?
-                if (e == null) {
-                    return null
-                }
-                try {
-                    val dataJson = String(e.data)
-                    val jb: JSONObject = JSONObject(dataJson)
-                    val userAction = jb.opt("userAction").toString()
-                    Log.d("QWER", "${ele.type} --> parseMsg: ${dataJson}")
-                    val classType = when (userAction) {
-                        "ACTION_ID" -> PkReqMsg::class.java
-                        else -> null
-                    } ?: return null
-                    been = TypeUtils.gson.fromJson(dataJson, classType)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
 
             TIMElemType.Image -> {
                 var e: TIMImageElem? = null
@@ -96,7 +77,7 @@ open class C2CMsgParser : BaseMsgParser {
                     val userAction = jb.opt("userAction").toString()
                     Log.d("QWER", "${ele.type} --> parseMsg: ${dataJson}")
                     val classType = when (userAction) {
-                        "ACTION_ID" -> PkReqMsg::class.java
+                        MsgType.C2C_IMAGE -> ImageC2CMsg::class.java
                         else -> null
                     } ?: return null
                     been = TypeUtils.gson.fromJson(dataJson, classType)

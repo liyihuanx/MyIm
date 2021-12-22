@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="f3ffffff">#f3ffffff</color>
+    <string name="cancel">取消</string>
+    <string name="get_photo_capture">拍照</string>
+    <string name="get_photo_from_local">从图库中选择</string>
+    <string name="permissions_denied_tips_camera">需要相机权限，请在「系统设置」-「应该管理」-「%s」中打开</string>
+    <string name="permissions_denied_tips_storage">需要存储权限，请在「系统设置」-「应用管理」-「%s」- [权限管理] 中打开</string>
+    <string name="tip_select_voideo_tittle">选择要上传的视频</string>
+    <style name="BottomViewThemeDefault">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="BottomViewWhite" parent="@style/BottomViewThemeDefault">
+        <item name="android:windowBackground">@color/f3ffffff</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+    <style name="BottomViewWhiteMask" parent="@style/BottomViewWhite">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+    </style>
+</resources>
