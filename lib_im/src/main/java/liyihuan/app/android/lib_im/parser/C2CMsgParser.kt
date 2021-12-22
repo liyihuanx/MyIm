@@ -6,8 +6,8 @@ import liyihuan.app.android.lib_im.MsgType
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.base.BaseMsgParser
 import liyihuan.app.android.lib_im.base.IBaseMsgBean
-import liyihuan.app.android.lib_im.example.PkReqMsg
-import liyihuan.app.android.lib_im.example.TextC2CMsg
+import liyihuan.app.android.lib_im.bean.PkReqMsg
+import liyihuan.app.android.lib_im.bean.TextC2CMsg
 import liyihuan.app.android.lib_im.utils.TypeUtils
 import org.json.JSONObject
 

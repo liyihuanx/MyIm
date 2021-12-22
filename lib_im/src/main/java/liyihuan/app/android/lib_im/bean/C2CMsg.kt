@@ -1,4 +1,4 @@
-package liyihuan.app.android.lib_im.example
+package liyihuan.app.android.lib_im.bean
 
 import com.google.gson.annotations.Expose
 import liyihuan.app.android.lib_im.MsgType
@@ -12,7 +12,7 @@ import liyihuan.app.android.lib_im.utils.TypeUtils
  * @Author: liyihuan
  * @Date: 2021/12/21 20:39
  */
-open class C2CMsg<T> : BaseMsgBean() {
+open class C2CMsg<T> : BaseMsgBean<T>() {
     var userId = ""
     var nickName = ""
     var headPic = ""
@@ -36,8 +36,6 @@ open class C2CMsg<T> : BaseMsgBean() {
         headPic = UserInfoManager.userHeader
         msgParam = TypeUtils.gson.toJson(msgParamBean)
     }
-
-
 }
 
 /**

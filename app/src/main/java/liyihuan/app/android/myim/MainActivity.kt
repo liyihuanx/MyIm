@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import liyihuan.app.android.lib_im.*
-import liyihuan.app.android.lib_im.example.TextC2CMsg
+import liyihuan.app.android.lib_im.bean.TextC2CMsg
 
 class MainActivity : AppCompatActivity() {
     val imActionMsgListener = ImActionMsgListener()

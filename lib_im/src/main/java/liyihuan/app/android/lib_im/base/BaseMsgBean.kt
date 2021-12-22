@@ -9,7 +9,7 @@ import com.tencent.imsdk.TIMMessage
  * @Author: liyihuan
  * @Date: 2021/12/20 22:15
  */
-abstract class BaseMsgBean : IBaseMsgBean {
+abstract class BaseMsgBean<T> : IBaseMsgBean {
     open var userAction = "-1000"
     /**
      * 不需要序列化和反序列化

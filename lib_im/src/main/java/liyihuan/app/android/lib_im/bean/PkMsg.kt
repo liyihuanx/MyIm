@@ -1,6 +1,5 @@
-package liyihuan.app.android.lib_im.example
+package liyihuan.app.android.lib_im.bean
 
-import com.google.gson.Gson
 import com.google.gson.annotations.Expose
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.utils.TypeUtils
