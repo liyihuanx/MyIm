@@ -10,6 +10,7 @@ import liyihuan.app.android.lib_camera.Size
 import liyihuan.app.android.lib_im.*
 import liyihuan.app.android.lib_im.bean.ImageC2CMsg
 import liyihuan.app.android.lib_im.bean.TextC2CMsg
+import liyihuan.app.android.lib_im.utils.TypeUtils
 
 class MainActivity : AppCompatActivity() {
     val imActionMsgListener = ImActionMsgListener()
@@ -29,25 +30,25 @@ class MainActivity : AppCompatActivity() {
         )
 
         btnSend.setOnClickListener {
-            IMManager.sendC2CTextMessage(
-                UserInfoManager.receiverid,
-                "${UserInfoManager.userid} 发送了一条消息给 ${UserInfoManager.receiverid}"
-            )
+            IMManager.sendMessage(TextC2CMsg("${UserInfoManager.userid} 发送了一条消息给 ${UserInfoManager.receiverid}"))
         }
 
         btnSendPic.setOnClickListener {
-            PicPickHelper(this).show(Size(1, 2), object : PickCallback {
+            PicPickHelper(this).show(null, object : PickCallback {
                 override fun onSuccess(pathList: MutableList<String>) {
-                    val result = pathList[0]
-                    Log.d("QWER", "返回照片: $result")
-                    IMManager.sendC2CPicMessage(UserInfoManager.receiverid, result)
+                    val path = pathList[0]
+                    IMManager.sendMessage(ImageC2CMsg(path))
                 }
 
             })
         }
 
         imActionMsgListener.onOptAction<TextC2CMsg>(MsgType.C2C_TEXT) {
-            Log.d("QWER", "收到消息: ${it.msgParamBean}")
+            Log.d("QWER", "收到文本消息: ${TypeUtils.toJson(it)}")
+        }
+
+        imActionMsgListener.onOptAction<ImageC2CMsg>(MsgType.C2C_IMAGE) {
+            Log.d("QWER", "收到图片消息: ${TypeUtils.toJson(it)}")
         }
 
 //        lifecycle.addObserver()

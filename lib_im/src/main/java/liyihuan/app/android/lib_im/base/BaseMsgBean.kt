@@ -4,8 +4,8 @@ import com.google.gson.annotations.Expose
 import com.tencent.imsdk.TIMMessage
 import com.tencent.imsdk.TIMUserProfile
 import com.tencent.imsdk.TIMValueCallBack
-import liyihuan.app.android.lib_im.EnvironmentConfig
 import liyihuan.app.android.lib_im.UserInfoManager
+import liyihuan.app.android.lib_im.utils.TypeUtils
 
 /**
  * @ClassName: BaseMsgBean
@@ -27,9 +27,38 @@ abstract class BaseMsgBean : TIMMessage() {
     var mTxMessage: TIMMessage = TIMMessage()
 
     // 自己给消息定的ID
-    var userAction: String = "-1000"
+    var msgAction: String = "-1000"
 
+
+    fun setTxMsg(msg: TIMMessage) {
+        this.mTxMessage = msg
+    }
+
+    abstract fun getAction(): String
+
+    fun setMessageInfo() {
+        this.msgAction = getAction()
+        // 不是自己发的重新对用户信息赋值
+        if (!isSelf) {
+            mTxMessage.getSenderProfile(object : TIMValueCallBack<TIMUserProfile> {
+                override fun onSuccess(sendInfo: TIMUserProfile) {
+                    userId = sendInfo.identifier
+                    nickName = sendInfo.nickName
+                    headPic = sendInfo.faceUrl
+                }
+
+                override fun onError(code: Int, desc: String?) {
+                    // 获取失败可以弄一些默认的
+                }
+            })
+
+        }
+    }
 }
+
+
+
+
 
 // 创建一个消息的共同变量
 //  TIMMessage(消息体) 用来添加元素

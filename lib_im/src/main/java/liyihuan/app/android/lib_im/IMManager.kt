@@ -5,9 +5,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.tencent.imsdk.*
 import com.tencent.imsdk.BuildConfig
-import liyihuan.app.android.lib_im.base.BaseImFactory
-import liyihuan.app.android.lib_im.base.BaseMsgBean
-import liyihuan.app.android.lib_im.base.BaseMsgInterceptor
+import liyihuan.app.android.lib_im.base.*
 import liyihuan.app.android.lib_im.bean.ImageC2CMsg
 import liyihuan.app.android.lib_im.bean.TextC2CMsg
 import liyihuan.app.android.lib_im.parser.C2CMsgParser
@@ -137,45 +135,11 @@ object IMManager {
     /**
      * 发送
      */
-    fun sendC2CTextMessage(chatId: String, content: String, callback: ImCallback = DefaultIMCallback("文本发送成功")) {
+    private val conversation =
+        TIMManager.getInstance().getConversation(TIMConversationType.C2C, UserInfoManager.receiverid)
 
-        val textC2CMsg = TextC2CMsg()
-        textC2CMsg.createMsg(content)
-
-        // 把你的MsgBean转成json
-        val json = Gson().toJson(textC2CMsg)
-
-        val timMsg = textC2CMsg.mTxMessage
-        // 创建一个相应的消息元素
-        val elem = TIMTextElem()
-        // 消息元素 存放 你的MsgBean
-        elem.text = json
-        if (timMsg.addElement(elem) != 0) {
-            Log.d("QWER", "消息添加失败: ")
-            return
-        }
-
-        checkLogin(callback) {
-            // 创建一个会话
-            val conversation =
-                TIMManager.getInstance().getConversation(TIMConversationType.C2C, chatId)
-            // 发送消息
-            conversation.sendMessage(timMsg, TIMValueCallBackWarp(callback))
-        }
-    }
-
-    fun sendC2CPicMessage(chatId: String,path:String,callback: ImCallback = DefaultIMCallback("图片发送成功")) {
-        // 1.ImageC2CMsg(path) --> 就可以直接发送的
-        val imageMsg = ImageC2CMsg()
-        imageMsg.createMsg(path)
-
-        checkLogin(callback) {
-            // 创建一个会话
-            val conversation =
-                TIMManager.getInstance().getConversation(TIMConversationType.C2C, chatId)
-            // 发送消息
-            conversation.sendMessage(imageMsg, TIMValueCallBackWarp(callback))
-        }
+    fun sendMessage(msg: BaseMsgBean, callback: ImCallback = DefaultIMCallback("发送成功")) {
+        conversation.sendMessage(msg.mTxMessage, TIMValueCallBackWarp(callback))
     }
 
 

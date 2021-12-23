@@ -1,10 +1,12 @@
 package liyihuan.app.android.lib_im.bean
 
+import android.util.Log
 import com.google.gson.annotations.Expose
-import com.tencent.imsdk.TIMImageElem
+import com.tencent.imsdk.*
 import liyihuan.app.android.lib_im.MsgType
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.utils.TypeUtils
+import java.io.File
 
 /**
  * @ClassName: C2CMsg
@@ -14,54 +16,61 @@ import liyihuan.app.android.lib_im.utils.TypeUtils
  */
 abstract class C2CMsg<T> : BaseMsgBean() {
 
-    // 你想携带的参数
-    private var msgParam = ""
-
-
     @Expose(serialize = false)
-    var msgParamBean: T? = null
-        get() {
-            if (field == null) {
-                val t = TypeUtils.findNeedType(javaClass)
-                field = TypeUtils.fromJson<T>(msgParam, t)
+    var msgContent: T? = null
+
+
+    fun decorateMsg(mTxMessage: TIMMessage): BaseMsgBean {
+        // 设置一下消息发送者的信息
+        setMessageInfo()
+        return addMsgContent(mTxMessage)
+    }
+
+    abstract fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean
+}
+
+class TextC2CMsg() : C2CMsg<String>() {
+    override fun getAction() = MsgType.C2C_TEXT
+
+    /**
+     * 发送消息时用的
+     */
+    constructor(content: String) : this() {
+        val elem = TIMTextElem()
+        elem.text = content
+        mTxMessage.addElement(elem)
+    }
+
+
+    /**
+     * 接受到的消息，包装一下
+     */
+    override fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean {
+        msgContent = (mTxMessage.getElement(0) as TIMTextElem).text
+        return this
+    }
+
+
+}
+
+class ImageC2CMsg() : C2CMsg<String>() {
+    constructor(path: String) : this() {
+        val elem = TIMImageElem()
+        elem.path = path
+        mTxMessage.addElement(elem)
+    }
+
+
+
+    override fun getAction() = MsgType.C2C_IMAGE
+    override fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean {
+        val timImageElem = mTxMessage.getElement(0) as TIMImageElem
+        timImageElem.imageList.forEach {
+            if (it.type == TIMImageType.Thumb) {
+                msgContent = it.url
+                return@forEach
             }
-            return field
         }
-        private set
-
-
-    open fun createMsg(msgParamBean: T) {
-        msgParam = TypeUtils.toJson(msgParamBean)
-    }
-}
-
-/**
- *  接收到的消息类型为：
- * {
- *    "headPic":"",
- *    "msgParam":"\"liyihuan 发送了一条消息给 chenyalun\"",
- *    "nickName":"李逸欢",
- *    "userId":"liyihuan",
- *    "userAction":"1",
- *
- *    "mTxMessage":{ "msg":{} },
- * }
- */
-class TextC2CMsg : C2CMsg<String>() {
-    override fun createMsg(msgParamBean: String) {
-        super.createMsg(msgParamBean)
-        userAction = MsgType.C2C_TEXT
-    }
-
-}
-
-class ImageC2CMsg : C2CMsg<String>() {
-
-    override fun createMsg(msgParamBean: String) {
-        super.createMsg(msgParamBean)
-        val imageElem = TIMImageElem()
-        imageElem.path = msgParamBean
-        mTxMessage.addElement(imageElem)
-        userAction = MsgType.C2C_IMAGE
+        return this
     }
 }
