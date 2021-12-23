@@ -29,11 +29,9 @@ class MainActivity : AppCompatActivity() {
         )
 
         btnSend.setOnClickListener {
-            val textC2CMsg = TextC2CMsg()
-            textC2CMsg.createMsg("${UserInfoManager.userid} 发送了一条消息给 ${UserInfoManager.receiverid}")
             IMManager.sendC2CTextMessage(
                 UserInfoManager.receiverid,
-                textC2CMsg
+                "${UserInfoManager.userid} 发送了一条消息给 ${UserInfoManager.receiverid}"
             )
         }
 
@@ -42,10 +40,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onSuccess(pathList: MutableList<String>) {
                     val result = pathList[0]
                     Log.d("QWER", "返回照片: $result")
-
-                    val imageC2CMsg = ImageC2CMsg()
-                    imageC2CMsg.createMsg(ImageC2CMsg.ImageParam(result))
-                    IMManager.sendC2CPicMessage(UserInfoManager.receiverid, imageC2CMsg, result)
+                    IMManager.sendC2CPicMessage(UserInfoManager.receiverid, result)
                 }
 
             })

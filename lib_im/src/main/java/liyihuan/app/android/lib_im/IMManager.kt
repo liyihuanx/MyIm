@@ -8,8 +8,8 @@ import com.tencent.imsdk.BuildConfig
 import liyihuan.app.android.lib_im.base.BaseImFactory
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.base.BaseMsgInterceptor
-import liyihuan.app.android.lib_im.base.IBaseMsgBean
 import liyihuan.app.android.lib_im.bean.ImageC2CMsg
+import liyihuan.app.android.lib_im.bean.TextC2CMsg
 import liyihuan.app.android.lib_im.parser.C2CMsgParser
 import liyihuan.app.android.lib_im.parser.GroupMsgParser
 import liyihuan.app.android.lib_im.parser.SystemMsgParser
@@ -35,19 +35,19 @@ object IMManager {
 
         //群消息拦截
         IMMsgDispatcher.groupMsgInterceptor = object : BaseMsgInterceptor {
-            override fun onInterceptor(msg: IBaseMsgBean): Boolean {
+            override fun onInterceptor(msg: BaseMsgBean): Boolean {
                 return false
             }
         }
         // 系统消息拦截
         IMMsgDispatcher.systemMsgInterceptor = object : BaseMsgInterceptor {
-            override fun onInterceptor(msg: IBaseMsgBean): Boolean {
+            override fun onInterceptor(msg: BaseMsgBean): Boolean {
                 return false
             }
         }
         // 私聊消息拦截
         IMMsgDispatcher.c2cMsgInterceptor = object : BaseMsgInterceptor {
-            override fun onInterceptor(msg: IBaseMsgBean): Boolean {
+            override fun onInterceptor(msg: BaseMsgBean): Boolean {
                 return false
             }
         }
@@ -137,29 +137,20 @@ object IMManager {
     /**
      * 发送
      */
-    fun sendC2CTextMessage(chatId: String, timMessage: BaseMsgBean, callback: ImCallback = DefaultIMCallback("文本发送成功")) {
-        val json = Gson().toJson(timMessage)
-        val timMsg = TIMMessage()
-        val elem = TIMTextElem()
-        elem.text = json
-        timMsg.addElement(elem)
-        checkLogin(callback) {
-            // 创建一个会话
-            val conversation =
-                TIMManager.getInstance().getConversation(TIMConversationType.C2C, chatId)
-            // 发送消息
-            conversation.sendMessage(timMsg, TIMValueCallBackWarp(callback))
-        }
-    }
+    fun sendC2CTextMessage(chatId: String, content: String, callback: ImCallback = DefaultIMCallback("文本发送成功")) {
 
-    fun sendC2CPicMessage(chatId: String, timMessage: BaseMsgBean,path:String,callback: ImCallback = DefaultIMCallback("图片发送成功")) {
-        val json = Gson().toJson(timMessage)
-        // 构造一条消息
-        val timMsg = TIMMessage()
-        // 添加图片
-        val elem = TIMImageElem()
-        elem.path = path
-        if (timMsg.addElement(elem)!=0){
+        val textC2CMsg = TextC2CMsg()
+        textC2CMsg.createMsg(content)
+
+        // 把你的MsgBean转成json
+        val json = Gson().toJson(textC2CMsg)
+
+        val timMsg = textC2CMsg.mTxMessage
+        // 创建一个相应的消息元素
+        val elem = TIMTextElem()
+        // 消息元素 存放 你的MsgBean
+        elem.text = json
+        if (timMsg.addElement(elem) != 0) {
             Log.d("QWER", "消息添加失败: ")
             return
         }
@@ -170,6 +161,20 @@ object IMManager {
                 TIMManager.getInstance().getConversation(TIMConversationType.C2C, chatId)
             // 发送消息
             conversation.sendMessage(timMsg, TIMValueCallBackWarp(callback))
+        }
+    }
+
+    fun sendC2CPicMessage(chatId: String,path:String,callback: ImCallback = DefaultIMCallback("图片发送成功")) {
+        // 1.ImageC2CMsg(path) --> 就可以直接发送的
+        val imageMsg = ImageC2CMsg()
+        imageMsg.createMsg(path)
+
+        checkLogin(callback) {
+            // 创建一个会话
+            val conversation =
+                TIMManager.getInstance().getConversation(TIMConversationType.C2C, chatId)
+            // 发送消息
+            conversation.sendMessage(imageMsg, TIMValueCallBackWarp(callback))
         }
     }
 

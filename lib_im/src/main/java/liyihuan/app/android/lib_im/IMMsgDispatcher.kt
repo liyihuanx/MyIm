@@ -7,8 +7,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import liyihuan.app.android.lib_im.base.BaseImFactory
+import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.base.BaseMsgInterceptor
-import liyihuan.app.android.lib_im.base.IBaseMsgBean
 import liyihuan.app.android.lib_im.parser.C2CMsgParser
 import liyihuan.app.android.lib_im.parser.GroupMsgParser
 import liyihuan.app.android.lib_im.parser.SystemMsgParser
@@ -50,7 +50,7 @@ object IMMsgDispatcher {
         GlobalScope.launch(Dispatchers.Main) {
             when (msg.conversation?.type) {
                 TIMConversationType.System -> {
-                    var asyncBeen: IBaseMsgBean? = null
+                    var asyncBeen: BaseMsgBean? = null
                     // 1.解析消息
                     val job = async {
                         sysImParsers.forEach {
@@ -74,7 +74,7 @@ object IMMsgDispatcher {
 
                 TIMConversationType.Group -> {
 
-                    var asyncBeen: IBaseMsgBean? = null
+                    var asyncBeen: BaseMsgBean? = null
                     val job = async {
                         goupImParsers.forEach {
                             asyncBeen = it.parseMsg(msg)
@@ -96,7 +96,7 @@ object IMMsgDispatcher {
 
                 TIMConversationType.C2C -> {
                     val job = async {
-                        var asyncBeen: IBaseMsgBean? = null
+                        var asyncBeen: BaseMsgBean? = null
                         c2cMsgParsers.forEach {
                             asyncBeen = it.parseMsg(msg)
                             if (asyncBeen !== null) {

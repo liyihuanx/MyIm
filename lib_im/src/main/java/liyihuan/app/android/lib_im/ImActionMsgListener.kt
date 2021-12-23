@@ -1,7 +1,7 @@
 package liyihuan.app.android.lib_im
 
 import liyihuan.app.android.lib_im.base.BaseImFactory
-import liyihuan.app.android.lib_im.base.IBaseMsgBean
+import liyihuan.app.android.lib_im.base.BaseMsgBean
 import java.util.HashMap
 
 /**
@@ -26,7 +26,7 @@ class ImActionMsgListener : BaseImFactory {
     }
 
 
-    override fun onNewMsg(msg: IBaseMsgBean) {
+    override fun onNewMsg(msg: BaseMsgBean) {
         val function1: Function1<Any, Unit>? = hashMap[msg.getAction()]
         function1?.invoke(msg)
     }

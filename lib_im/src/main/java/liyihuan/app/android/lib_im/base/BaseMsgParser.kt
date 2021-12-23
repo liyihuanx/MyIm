@@ -15,5 +15,5 @@ interface BaseMsgParser {
      * BaseMsgBean 是自己的消息的基类
      * 就是把腾讯的消息 转换成 自己的消息
      */
-    fun parseMsg(msg: TIMMessage): IBaseMsgBean?
+    fun parseMsg(msg: TIMMessage): BaseMsgBean?
 }

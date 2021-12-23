@@ -8,6 +8,6 @@ package liyihuan.app.android.lib_im.base
  */
 interface BaseImFactory {
 
-    fun onNewMsg(msg: IBaseMsgBean)
+    fun onNewMsg(msg: BaseMsgBean)
 
 }

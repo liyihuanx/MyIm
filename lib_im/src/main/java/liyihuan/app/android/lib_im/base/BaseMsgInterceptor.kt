@@ -11,5 +11,5 @@ interface BaseMsgInterceptor {
      * 可在消息解析前做拦截
      * true拦截，false不拦截
      */
-    fun onInterceptor(msg: IBaseMsgBean): Boolean
+    fun onInterceptor(msg: BaseMsgBean): Boolean
 }

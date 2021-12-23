@@ -1,9 +1,7 @@
 package liyihuan.app.android.lib_im.example
 
 import liyihuan.app.android.lib_im.IMManager
-import liyihuan.app.android.lib_im.IMMsgDispatcher
 import liyihuan.app.android.lib_im.ImActionMsgListener
-import liyihuan.app.android.lib_im.base.IBaseMsgBean
 
 /**
  * @author liyihuan

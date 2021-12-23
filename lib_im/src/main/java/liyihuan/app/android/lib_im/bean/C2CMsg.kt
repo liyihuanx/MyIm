@@ -1,8 +1,8 @@
 package liyihuan.app.android.lib_im.bean
 
 import com.google.gson.annotations.Expose
+import com.tencent.imsdk.TIMImageElem
 import liyihuan.app.android.lib_im.MsgType
-import liyihuan.app.android.lib_im.UserInfoManager
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.utils.TypeUtils
 
@@ -12,11 +12,11 @@ import liyihuan.app.android.lib_im.utils.TypeUtils
  * @Author: liyihuan
  * @Date: 2021/12/21 20:39
  */
-open class C2CMsg<T> : BaseMsgBean() {
-    var userId = ""
-    var nickName = ""
-    var headPic = ""
+abstract class C2CMsg<T> : BaseMsgBean() {
+
+    // 你想携带的参数
     private var msgParam = ""
+
 
     @Expose(serialize = false)
     var msgParamBean: T? = null
@@ -31,10 +31,7 @@ open class C2CMsg<T> : BaseMsgBean() {
 
 
     open fun createMsg(msgParamBean: T) {
-        userId = UserInfoManager.userid
-        nickName = UserInfoManager.username
-        headPic = UserInfoManager.userHeader
-        msgParam = TypeUtils.gson.toJson(msgParamBean)
+        msgParam = TypeUtils.toJson(msgParamBean)
     }
 }
 
@@ -45,8 +42,9 @@ open class C2CMsg<T> : BaseMsgBean() {
  *    "msgParam":"\"liyihuan 发送了一条消息给 chenyalun\"",
  *    "nickName":"李逸欢",
  *    "userId":"liyihuan",
- *    "mTxMessage":{ "msg":{}},
- *    "userAction":"1"
+ *    "userAction":"1",
+ *
+ *    "mTxMessage":{ "msg":{} },
  * }
  */
 class TextC2CMsg : C2CMsg<String>() {
@@ -57,14 +55,13 @@ class TextC2CMsg : C2CMsg<String>() {
 
 }
 
-class ImageC2CMsg : C2CMsg<ImageC2CMsg.ImageParam>() {
-    data class ImageParam(val imageUrl: String = "")
+class ImageC2CMsg : C2CMsg<String>() {
 
-
-    override fun createMsg(msgParamBean: ImageParam) {
+    override fun createMsg(msgParamBean: String) {
         super.createMsg(msgParamBean)
+        val imageElem = TIMImageElem()
+        imageElem.path = msgParamBean
+        mTxMessage.addElement(imageElem)
         userAction = MsgType.C2C_IMAGE
-
     }
-
 }

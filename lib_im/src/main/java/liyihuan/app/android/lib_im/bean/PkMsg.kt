@@ -11,9 +11,7 @@ import liyihuan.app.android.lib_im.utils.TypeUtils
  * @Date: 2021/12/20 23:05
  */
 open class BasePkMsg<T> :  BaseMsgBean(){
-    var userId = ""
-    var nickName = ""
-    var headPic = ""
+
     private var param = ""
 
     /**

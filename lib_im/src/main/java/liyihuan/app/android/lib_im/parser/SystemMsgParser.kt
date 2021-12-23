@@ -1,8 +1,8 @@
 package liyihuan.app.android.lib_im.parser
 
 import com.tencent.imsdk.TIMMessage
+import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.base.BaseMsgParser
-import liyihuan.app.android.lib_im.base.IBaseMsgBean
 
 /**
  * @author liyihuan
@@ -10,7 +10,7 @@ import liyihuan.app.android.lib_im.base.IBaseMsgBean
  * @Description
  */
 open class SystemMsgParser : BaseMsgParser {
-    override fun parseMsg(msg: TIMMessage): IBaseMsgBean? {
+    override fun parseMsg(msg: TIMMessage): BaseMsgBean? {
         return null
     }
 }
