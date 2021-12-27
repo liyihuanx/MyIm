@@ -2,6 +2,7 @@ package liyihuan.app.android.lib_im.example
 
 import liyihuan.app.android.lib_im.IMManager
 import liyihuan.app.android.lib_im.ImActionMsgListener
+import liyihuan.app.android.lib_im.bean.PKRejectMsg
 
 /**
  * @author liyihuan
@@ -26,5 +27,10 @@ class ExampleTest {
         imActionMsgListener.onOptAction<String>("ACTION_ID") {
             // 接收到消息的数据再处理
         }
+    }
+
+    fun buildPkMsg(){
+        val pkMsgParam = PKRejectMsg.PkMsgParam("拒绝", false)
+        PKRejectMsg().createMsg(pkMsgParam)
     }
 }

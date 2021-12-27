@@ -10,5 +10,11 @@ object MsgType {
 
     const val C2C_TEXT = "1"
     const val C2C_IMAGE = "2"
+    const val C2C_SOUND = "3"
+
+    // 自定义消息
+    const val CUSTOM_PK_REQ = "10"
+    const val CUSTOM_PK_REJECT = "11"
+
 
 }

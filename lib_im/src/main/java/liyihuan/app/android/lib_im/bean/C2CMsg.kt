@@ -5,8 +5,6 @@ import com.google.gson.annotations.Expose
 import com.tencent.imsdk.*
 import liyihuan.app.android.lib_im.MsgType
 import liyihuan.app.android.lib_im.base.BaseMsgBean
-import liyihuan.app.android.lib_im.utils.TypeUtils
-import java.io.File
 
 /**
  * @ClassName: C2CMsg
@@ -19,14 +17,6 @@ abstract class C2CMsg<T> : BaseMsgBean() {
     @Expose(serialize = false)
     var msgContent: T? = null
 
-
-    fun decorateMsg(mTxMessage: TIMMessage): BaseMsgBean {
-        // 设置一下消息发送者的信息
-        setMessageInfo()
-        return addMsgContent(mTxMessage)
-    }
-
-    abstract fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean
 }
 
 class TextC2CMsg() : C2CMsg<String>() {
@@ -60,8 +50,6 @@ class ImageC2CMsg() : C2CMsg<String>() {
         mTxMessage.addElement(elem)
     }
 
-
-
     override fun getAction() = MsgType.C2C_IMAGE
     override fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean {
         val timImageElem = mTxMessage.getElement(0) as TIMImageElem
@@ -74,3 +62,36 @@ class ImageC2CMsg() : C2CMsg<String>() {
         return this
     }
 }
+
+class SoundC2CMsg() : C2CMsg<SoundC2CMsg.SoundInfo>() {
+    constructor(soundInfo: SoundInfo) : this() {
+        val elem = TIMSoundElem()
+        elem.path = soundInfo.path
+        elem.duration = soundInfo.duration
+        mTxMessage.addElement(elem)
+    }
+
+    override fun getAction() = MsgType.C2C_SOUND
+    override fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean {
+        val timSoundElem = mTxMessage.getElement(0) as TIMSoundElem
+        var soundPath = ""
+        timSoundElem.getUrl(object : TIMValueCallBack<String> {
+            override fun onError(code: Int, desc: String?) {
+            }
+
+            override fun onSuccess(path: String) {
+                soundPath = path
+            }
+
+        })
+        msgContent = SoundInfo(soundPath, timSoundElem.duration)
+        return this
+    }
+
+    data class SoundInfo(
+        val path: String = "",
+        val duration: Long = 0
+    )
+
+}
+

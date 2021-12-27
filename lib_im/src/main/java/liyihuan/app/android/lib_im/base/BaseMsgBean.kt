@@ -36,6 +36,14 @@ abstract class BaseMsgBean : TIMMessage() {
 
     abstract fun getAction(): String
 
+    abstract fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean
+
+    fun decorateMsg(mTxMessage: TIMMessage): BaseMsgBean {
+        // 设置一下消息发送者的信息
+        setMessageInfo()
+        return addMsgContent(mTxMessage)
+    }
+
     fun setMessageInfo() {
         this.msgAction = getAction()
         // 不是自己发的重新对用户信息赋值

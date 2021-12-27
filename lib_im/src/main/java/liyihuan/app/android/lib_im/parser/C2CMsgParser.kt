@@ -5,8 +5,7 @@ import com.tencent.imsdk.*
 import liyihuan.app.android.lib_im.MsgType
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.base.BaseMsgParser
-import liyihuan.app.android.lib_im.bean.ImageC2CMsg
-import liyihuan.app.android.lib_im.bean.TextC2CMsg
+import liyihuan.app.android.lib_im.bean.*
 import liyihuan.app.android.lib_im.utils.TypeUtils
 import org.json.JSONObject
 
@@ -20,34 +19,45 @@ open class C2CMsgParser : BaseMsgParser {
     override fun parseMsg(msg: TIMMessage): BaseMsgBean? {
         // 获取第一个消息元素，这是你自己添加
         val ele = msg.getElement(0)
-        return when (ele.type) {
-            TIMElemType.Text -> TextC2CMsg().decorateMsg(msg)
-            TIMElemType.Image -> ImageC2CMsg().decorateMsg(msg)
+        val c2CMsg = when (ele.type) {
+            TIMElemType.Text -> TextC2CMsg()
+            TIMElemType.Image -> ImageC2CMsg()
+            TIMElemType.Sound -> SoundC2CMsg()
+
+            TIMElemType.Custom -> {
+                var e: TIMCustomElem? = null
+                e = ele as TIMCustomElem?
+                if (e == null) {
+                    return null
+                }
+                // 先拿到数据
+                val dataJson = String(e.data)
+                // 拿到自定义的userAction标识
+                val userAction = try {
+                    val jb: JSONObject = JSONObject(dataJson)
+                    jb.opt("userAction").toString()
+                    Log.d("QWER", "${ele.type} --> parseMsg: ${dataJson}")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                // 根据userAction找到对应的Bean类
+                val classType = when (userAction) {
+                    MsgType.CUSTOM_PK_REQ -> PkReqMsg::class.java
+                    MsgType.CUSTOM_PK_REJECT -> PKRejectMsg::class.java
+
+                    else -> null
+                } ?: return null
+                // 返回值
+                TypeUtils.fromJson(dataJson, classType) as BaseMsgBean?
+            }
+
             else -> {
                 null
             }
         }
+        return c2CMsg?.decorateMsg(msg)
+
     }
 }
 
 
-//TIMElemType.Custom -> {
-//    var e: TIMCustomElem? = null
-//    e = ele as TIMCustomElem?
-//    if (e == null) {
-//        return null
-//    }
-//    try {
-//        val dataJson = String(e.data)
-//        val jb: JSONObject = JSONObject(dataJson)
-//        val userAction = jb.opt("userAction").toString()
-//        Log.d("QWER", "${ele.type} --> parseMsg: ${dataJson}")
-//        val classType = when (userAction) {
-//            "ACTION_ID" -> PkReqMsg::class.java
-//            else -> null
-//        } ?: return null
-//        been = TypeUtils.fromJson(dataJson, classType)
-//    } catch (e: Exception) {
-//        e.printStackTrace()
-//    }
-//}
