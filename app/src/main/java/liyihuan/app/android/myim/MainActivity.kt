@@ -15,6 +15,7 @@ import liyihuan.app.android.lib_camera.PicPickHelper
 import liyihuan.app.android.lib_camera.PickCallback
 import liyihuan.app.android.lib_im.*
 import liyihuan.app.android.lib_im.bean.ImageC2CMsg
+import liyihuan.app.android.lib_im.bean.PkReqMsg
 import liyihuan.app.android.lib_im.bean.SoundC2CMsg
 import liyihuan.app.android.lib_im.bean.TextC2CMsg
 import liyihuan.app.android.lib_im.utils.TypeUtils
@@ -34,7 +35,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         tvInfo.text = "我是：${UserInfoManager.username}"
         IMManager.addC2CListener(imActionMsgListener)
@@ -92,7 +92,13 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-//        lifecycle.addObserver()
+
+        btnCustomer.setOnClickListener {
+            val pkReqMsg = PkReqMsg()
+            val pkMsgParam = PkReqMsg.PkMsgParam("pk消息", false, "12345")
+            pkReqMsg.createMsg(pkMsgParam)
+            IMManager.sendMessage(pkReqMsg)
+        }
     }
 
     private fun getMsgContent() {
@@ -106,7 +112,11 @@ class MainActivity : AppCompatActivity() {
 
         imActionMsgListener.onOptAction<SoundC2CMsg>(MsgType.C2C_SOUND) {
             Log.d("QWER", "收到语音消息: ${TypeUtils.toJson(it)}")
-            PlayEngine.play(it.msgContent?.path)
+//            PlayEngine.play(it.msgContent?.path)
+        }
+
+        imActionMsgListener.onOptAction<PkReqMsg>(MsgType.CUSTOM_PK_REQ) {
+            Log.d("QWER", "收到自定义消息: ${TypeUtils.toJson(it)}")
         }
 
     }

@@ -23,7 +23,6 @@ open class C2CMsgParser : BaseMsgParser {
             TIMElemType.Text -> TextC2CMsg()
             TIMElemType.Image -> ImageC2CMsg()
             TIMElemType.Sound -> SoundC2CMsg()
-
             TIMElemType.Custom -> {
                 var e: TIMCustomElem? = null
                 e = ele as TIMCustomElem?
@@ -32,11 +31,12 @@ open class C2CMsgParser : BaseMsgParser {
                 }
                 // 先拿到数据
                 val dataJson = String(e.data)
+                val jb: JSONObject = JSONObject(dataJson)
                 // 拿到自定义的userAction标识
-                val userAction = try {
-                    val jb: JSONObject = JSONObject(dataJson)
-                    jb.opt("userAction").toString()
-                    Log.d("QWER", "${ele.type} --> parseMsg: ${dataJson}")
+                var userAction = ""
+                var msgContent = ""
+                try {
+                    userAction = jb.opt("userAction").toString()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -49,6 +49,7 @@ open class C2CMsgParser : BaseMsgParser {
                 } ?: return null
                 // 返回值
                 TypeUtils.fromJson(dataJson, classType) as BaseMsgBean?
+
             }
 
             else -> {

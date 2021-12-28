@@ -7,6 +7,31 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="发送文本" />
+
+
+    <Button
+        android:id="@+id/btnSendPic"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="发送图片" />
+
+    <Button
+        android:id="@+id/btnSendSound"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="发送语音" />
+
+    <Button
+        android:id="@+id/btnCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="发送自定义消息" />
+
     <TextView
         android:id="@+id/tvInfo"
         android:layout_width="match_parent"
@@ -17,17 +42,11 @@
         android:textSize="15dp"
         android:textStyle="bold" />
 
-
-    <Button
-        android:id="@+id/btnSend"
+    <liyihuan.app.android.myim.ui.voice.VoiceView
+        android:id="@+id/voiceView"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="发送文本"/>
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
-    <Button
-        android:id="@+id/btnSendPic"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="发送图片"/>
 
 </LinearLayout>

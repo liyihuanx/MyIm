@@ -1,10 +1,13 @@
 package liyihuan.app.android.lib_im.bean
 
+import android.util.Log
 import com.google.gson.annotations.Expose
+import com.tencent.imsdk.TIMCustomElem
 import com.tencent.imsdk.TIMMessage
 import liyihuan.app.android.lib_im.MsgType
 import liyihuan.app.android.lib_im.base.BaseMsgBean
 import liyihuan.app.android.lib_im.utils.TypeUtils
+import org.json.JSONObject
 
 /**
  * @ClassName: PkMsg
@@ -12,7 +15,7 @@ import liyihuan.app.android.lib_im.utils.TypeUtils
  * @Author: liyihuan
  * @Date: 2021/12/20 23:05
  */
-abstract class BasePkMsg<T> : BaseMsgBean() {
+abstract class BaseCustomMsg<T> : BaseMsgBean() {
 
     private var param = ""
 
@@ -36,7 +39,20 @@ abstract class BasePkMsg<T> : BaseMsgBean() {
         private set
 
     open fun createMsg(paramBean :T){
+        val dataObj = JSONObject()
+        dataObj.put("userAction", getAction())
+        // 转成String
         param = TypeUtils.toJson(paramBean)
+        val jsonObject = JSONObject(TypeUtils.gson.fromJson(param, MutableMap::class.java))
+        dataObj.put("value", jsonObject)
+        Log.d("QWER", "自己传入的paramBean: $jsonObject")
+
+        Log.d("QWER", "要传的参数: ${dataObj.toString()}")
+
+        val timCustomElem = TIMCustomElem()
+        timCustomElem.data = dataObj.toString().toByteArray()
+
+        mTxMessage.addElement(timCustomElem)
     }
 
     override fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean {
@@ -45,7 +61,7 @@ abstract class BasePkMsg<T> : BaseMsgBean() {
 }
 
 //pk请求
-class PkReqMsg : BasePkMsg<PkReqMsg.PkMsgParam>() {
+class PkReqMsg() : BaseCustomMsg<PkReqMsg.PkMsgParam>() {
 
     data class PkMsgParam(
         var playUrl: String = "",
@@ -55,12 +71,21 @@ class PkReqMsg : BasePkMsg<PkReqMsg.PkMsgParam>() {
 
     override fun getAction() = MsgType.CUSTOM_PK_REQ
 
+    override fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean {
+        val timCustomElem = mTxMessage.getElement(0) as TIMCustomElem
+        val toString = String(timCustomElem.data)
+        val jsonObject = JSONObject(toString)
+        val dataJson = jsonObject.opt("value")
+        val fromJson = TypeUtils.fromJson<PkMsgParam>(dataJson as String, PkMsgParam::class.java)
+        
 
 
+        return this
+    }
 }
 
 // pk拒接
-class PKRejectMsg : BasePkMsg<PKRejectMsg.PkMsgParam>() {
+class PKRejectMsg : BaseCustomMsg<PKRejectMsg.PkMsgParam>() {
     data class PkMsgParam(
         var reason: String = "",
         var isAgain: Boolean = false,
