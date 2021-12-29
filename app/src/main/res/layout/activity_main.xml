@@ -7,6 +7,17 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="1111"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+
     <Button
         android:id="@+id/btnSend"
         android:layout_width="match_parent"
@@ -32,15 +43,20 @@
         android:layout_height="50dp"
         android:text="发送自定义消息" />
 
-    <TextView
-        android:id="@+id/tvInfo"
+    <Button
+        android:id="@+id/btnOpenDialog"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:gravity="center"
-        android:text="1111"
-        android:textColor="@color/black"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:text="打开一个Dialog" />
+
+
+    <Button
+        android:id="@+id/btnOpenActivity1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="打开一个Activity" />
+
+
 
     <liyihuan.app.android.myim.ui.voice.VoiceView
         android:id="@+id/voiceView"

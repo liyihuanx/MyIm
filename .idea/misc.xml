@@ -6,8 +6,11 @@
         <entry key="..\:/MyIm/app/src/main/res/layout/activity_chat_room.xml" value="0.33094994892747703" />
         <entry key="..\:/MyIm/app/src/main/res/layout/activity_main.xml" value="0.33094994892747703" />
         <entry key="app/src/main/res/drawable/bg_voice_sending.xml" value="0.3729166666666667" />
+        <entry key="app/src/main/res/layout/activity_example1.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33541666666666664" />
         <entry key="app/src/main/res/layout/base_chat_input_voice_record.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/dialog_common.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/dialog_recharge.xml" value="0.35260416666666666" />
         <entry key="lib_camera/src/main/res/layout/dialog_choose_pic.xml" value="0.35260416666666666" />
       </map>
     </option>

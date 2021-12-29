@@ -2,6 +2,7 @@ package liyihuan.app.android.myim
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -19,6 +20,7 @@ import liyihuan.app.android.lib_im.bean.PkReqMsg
 import liyihuan.app.android.lib_im.bean.SoundC2CMsg
 import liyihuan.app.android.lib_im.bean.TextC2CMsg
 import liyihuan.app.android.lib_im.utils.TypeUtils
+import liyihuan.app.android.myim.dialog.RechargeDialog
 import liyihuan.app.android.myim.ui.voice.PlayEngine
 import liyihuan.app.android.myim.ui.voice.RecorderHelper
 
@@ -35,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        AppStateDistribute.onUserStateChange(UserState.UserStateBegin.state)
 
         tvInfo.text = "我是：${UserInfoManager.nickName}"
         IMManager.addC2CListener(imActionMsgListener)
@@ -98,6 +102,15 @@ class MainActivity : AppCompatActivity() {
             val pkMsgParam = PkReqMsg.PkMsgParam("pk消息", false, "12345")
             pkReqMsg.createMsg(pkMsgParam)
             IMManager.sendMessage(pkReqMsg)
+        }
+
+        btnOpenDialog.setOnClickListener {
+            RechargeDialog().show(supportFragmentManager,"")
+        }
+
+        btnOpenActivity1.setOnClickListener {
+            val intent = Intent(this, ExampleActivity1::class.java)
+            startActivity(intent)
         }
     }
 
