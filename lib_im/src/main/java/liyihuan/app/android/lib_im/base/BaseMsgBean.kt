@@ -17,8 +17,8 @@ abstract class BaseMsgBean : TIMMessage() {
 
     // 用户信息
     var userId: String = UserInfoManager.userid
-    var nickName: String = UserInfoManager.username
-    var headPic: String = UserInfoManager.userHeader
+    var nickName: String = UserInfoManager.nickName
+    var headPic: String = UserInfoManager.headPic
 
     /**
      * 不需要序列化和反序列化
@@ -44,23 +44,20 @@ abstract class BaseMsgBean : TIMMessage() {
         return addMsgContent(mTxMessage)
     }
 
-    fun setMessageInfo() {
+    private fun setMessageInfo() {
         this.msgAction = getAction()
         // 不是自己发的重新对用户信息赋值
-        if (!isSelf) {
-            mTxMessage.getSenderProfile(object : TIMValueCallBack<TIMUserProfile> {
-                override fun onSuccess(sendInfo: TIMUserProfile) {
-                    userId = sendInfo.identifier
-                    nickName = sendInfo.nickName
-                    headPic = sendInfo.faceUrl
-                }
+        mTxMessage.getSenderProfile(object : TIMValueCallBack<TIMUserProfile> {
+            override fun onSuccess(sendInfo: TIMUserProfile) {
+                userId = sendInfo.identifier
+                nickName = sendInfo.nickName
+                headPic = sendInfo.faceUrl
+            }
 
-                override fun onError(code: Int, desc: String?) {
-                    // 获取失败可以弄一些默认的
-                }
-            })
-
-        }
+            override fun onError(code: Int, desc: String?) {
+                // 获取失败可以弄一些默认的
+            }
+        })
     }
 }
 

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tvInfo.text = "我是：${UserInfoManager.username}"
+        tvInfo.text = "我是：${UserInfoManager.nickName}"
         IMManager.addC2CListener(imActionMsgListener)
         IMManager.login(
             UserInfoManager.userid,
@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         imActionMsgListener.onOptAction<PkReqMsg>(MsgType.CUSTOM_PK_REQ) {
-            Log.d("QWER", "收到自定义消息: ${TypeUtils.toJson(it)}")
+            Log.d("QWER", "收到自定义消息: ${TypeUtils.toJson(it.paramBean)}")
         }
 
     }

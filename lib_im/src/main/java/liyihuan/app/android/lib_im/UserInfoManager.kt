@@ -12,10 +12,13 @@ object UserInfoManager {
     // 黑手机用这个
 //    const val userid = "liyihuan"
 //    const val receiverid = "chenyalun"
-//    const val username = "李逸欢"
+//    const val nickName = "李逸欢"
+//    const val headPic = "touxaing"
 
     // 白手机用这个
     const val userid = "chenyalun"
     const val receiverid = "liyihuan"
-    const val username = "陈雅伦"
+    const val nickName = "陈雅伦"
+    const val headPic = "touxaing"
+
 }

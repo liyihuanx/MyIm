@@ -39,15 +39,14 @@ abstract class BaseCustomMsg<T> : BaseMsgBean() {
         private set
 
     open fun createMsg(paramBean :T){
+        // 新建一个传递的数据对象
         val dataObj = JSONObject()
-        dataObj.put("userAction", getAction())
+        dataObj.put("msgAction", getAction())
         // 转成String
         param = TypeUtils.toJson(paramBean)
-        val jsonObject = JSONObject(TypeUtils.gson.fromJson(param, MutableMap::class.java))
-        dataObj.put("value", jsonObject)
-        Log.d("QWER", "自己传入的paramBean: $jsonObject")
 
-        Log.d("QWER", "要传的参数: ${dataObj.toString()}")
+        // 放入value保存
+        dataObj.put("value", param)
 
         val timCustomElem = TIMCustomElem()
         timCustomElem.data = dataObj.toString().toByteArray()
@@ -56,12 +55,17 @@ abstract class BaseCustomMsg<T> : BaseMsgBean() {
     }
 
     override fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean {
+        val element = mTxMessage.getElement(0) as TIMCustomElem
+        val dataJson = String(element.data)
+        val jsonObject = JSONObject(dataJson)
+        msgAction = jsonObject.optString("msgAction")
+        param = jsonObject.optString("value")
         return this
     }
 }
 
 //pk请求
-class PkReqMsg() : BaseCustomMsg<PkReqMsg.PkMsgParam>() {
+class PkReqMsg : BaseCustomMsg<PkReqMsg.PkMsgParam>() {
 
     data class PkMsgParam(
         var playUrl: String = "",
@@ -70,18 +74,6 @@ class PkReqMsg() : BaseCustomMsg<PkReqMsg.PkMsgParam>() {
     )
 
     override fun getAction() = MsgType.CUSTOM_PK_REQ
-
-    override fun addMsgContent(mTxMessage: TIMMessage): BaseMsgBean {
-        val timCustomElem = mTxMessage.getElement(0) as TIMCustomElem
-        val toString = String(timCustomElem.data)
-        val jsonObject = JSONObject(toString)
-        val dataJson = jsonObject.opt("value")
-        val fromJson = TypeUtils.fromJson<PkMsgParam>(dataJson as String, PkMsgParam::class.java)
-        
-
-
-        return this
-    }
 }
 
 // pk拒接
